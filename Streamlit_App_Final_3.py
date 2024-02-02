@@ -17,7 +17,7 @@ if uploaded_file is not None:
         st.image(pil_image, caption="Uploaded Image", use_column_width=True)
 
         # Load the pre-trained model only if an image is uploaded
-        model = tf.keras.models.load_model('dog_cat_detector_model_Final_3.hdf5')
+        model = tf.keras.models.load_model('dog_cat_detector_model_Final_2.h5')
 
         # Preprocess the image for the model
         img_array = tf.keras.preprocessing.image.img_to_array(pil_image)
