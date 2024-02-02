@@ -42,4 +42,4 @@ if uploaded_file is not None:
         st.write(f"Confidence: {float(confidence):.2%}")
 
     except Exception as e:
-        st.error(f"Error processing the image: {e}")
+        st.error(f"Errort processing the image: {e}")
