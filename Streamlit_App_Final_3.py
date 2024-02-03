@@ -1,10 +1,10 @@
-from PIL import Image as PilImage
+from PIL import Image
 import streamlit as st
 import tensorflow as tf
 
 # Function to preprocess the image
 def preprocess_image(image_path):
-    pil_image = PilImage.open(image_path)
+    pil_image = Image.open(image_path)
     pil_image_resized = pil_image.resize((224, 224))
     img_array = tf.keras.preprocessing.image.img_to_array(pil_image_resized)
     img_array = tf.expand_dims(img_array, 0)  # Create batch axis
@@ -20,7 +20,7 @@ uploaded_file = st.file_uploader("Choose a file", type=["jpg", "jpeg", "png"])
 if uploaded_file is not None:
     try:
         # Display the uploaded image
-        pil_image = PilImage.open(uploaded_file)
+        pil_image = Image.open(uploaded_file)
         st.image(pil_image, caption="Uploaded Image", use_column_width=True)
 
         # Preprocess the resized image for the model
@@ -45,8 +45,7 @@ if uploaded_file is not None:
         st.write(f"Predicted class: {predicted_class}")
         st.write(f"Confidence: {float(confidence):.2%}")
 
-    except PIL.UnidentifiedImageError as e:
+    except Image.UnidentifiedImageError as e:
         st.error(f"Error: Unable to identify image file. Please upload a valid image.")
     except Exception as e:
         st.error(f"Error processing the image: {e}")
-        
