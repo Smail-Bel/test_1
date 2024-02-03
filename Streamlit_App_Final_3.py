@@ -45,5 +45,7 @@ if uploaded_file is not None:
         st.write(f"Predicted class: {predicted_class}")
         st.write(f"Confidence: {float(confidence):.2%}")
 
+    except PIL.UnidentifiedImageError as e:
+        st.error(f"Error: Unable to identify image file. Please upload a valid image.")
     except Exception as e:
         st.error(f"Error processing the image: {e}")
