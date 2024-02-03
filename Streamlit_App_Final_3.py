@@ -1,6 +1,8 @@
-from PIL import Image
 import streamlit as st
 import tensorflow as tf
+from PIL import Image
+import requests
+from io import BytesIO
 
 # Function to preprocess the image
 def preprocess_image(image_path):
@@ -17,6 +19,10 @@ st.title("Dog vs Cat Image Classifier")
 # Upload an image through Streamlit
 uploaded_file = st.file_uploader("Choose a file", type=["jpg", "jpeg", "png"])
 
+# Load the pre-trained model only if an image is uploaded
+model_path = 'main/dog_cat_detector_model_Final_2.h5'
+model = tf.keras.models.load_model(model_path)
+
 if uploaded_file is not None:
     try:
         # Display the uploaded image
@@ -25,9 +31,6 @@ if uploaded_file is not None:
 
         # Preprocess the resized image for the model
         img_array = preprocess_image(uploaded_file)
-
-        # Load the pre-trained model only if an image is uploaded
-        model = tf.keras.models.load_model('dog_cat_detector_model_Final_2.h5')
 
         # Make predictions using the loaded model
         predictions = model.predict(img_array)
