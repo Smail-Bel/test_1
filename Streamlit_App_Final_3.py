@@ -41,7 +41,7 @@ if uploaded_file is not None:
         download_model_from_github(model_url, model_filename)
 
         # Load the pre-trained model
-        model = tf.keras.models.load_model(model_filename)
+        model = tf.keras.models.load_model(model_filename, compile=False)
 
         # Make predictions using the loaded model
         predictions = model.predict(img_array)
