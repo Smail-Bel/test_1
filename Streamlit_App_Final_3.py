@@ -1,7 +1,8 @@
 import streamlit as st
 import tensorflow as tf
 from PIL import Image
-import requests
+import os
+import wget
 from io import BytesIO
 
 # Function to preprocess the image
@@ -19,15 +20,18 @@ st.title("Dog vs Cat Image Classifier")
 # Upload an image through Streamlit
 uploaded_file = st.file_uploader("Choose a file", type=["jpg", "jpeg", "png"])
 
-# Load the pre-trained model only if an image is uploaded
+# Specify the GitHub Raw Content URL for the model file
 model_url = 'https://raw.githubusercontent.com/Smail-Bel/test_1/main/dog_cat_detector_model_Final_2.h5'
 
-try:
-    # Fetch the model content from GitHub
-    model_content = requests.get(model_url).content
+# Specify the local path for the downloaded model file
+model_local_path = './dog_cat_detector_model_Final_2.h5'
 
-    # Load the pre-trained model from in-memory content
-    model = tf.keras.models.load_model(BytesIO(model_content))
+try:
+    # Download the model file from GitHub to a temporary directory
+    wget.download(model_url, model_local_path)
+
+    # Load the pre-trained model from the local path
+    model = tf.keras.models.load_model(model_local_path)
 
     if uploaded_file is not None:
         try:
@@ -59,8 +63,10 @@ try:
         except Exception as e:
             st.error(f"Error processing the image: {e}")
 
-except requests.exceptions.RequestException as e:
-    st.error(f"Error fetching model from GitHub: {e}")
-
 except Exception as e:
     st.error(f"Error loading the model: {e}")
+
+finally:
+    # Remove the downloaded model file after using it
+    if os.path.exists(model_local_path):
+        os.remove(model_local_path)
